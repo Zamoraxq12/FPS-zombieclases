@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operación Extracción · Sobrevive al apocalipsis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Three.js desde CDN mediante import map (no requiere npm) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <script>
+    // Si Three.js no se pudo descargar (sin internet), avisar en vez de quedarse en "cargando"
+    setTimeout(function () {
+      if (!window.__gameStarted) document.getElementById('loading-text').innerHTML =
+        'NO SE PUDO INICIAR EL JUEGO.<br><br>Se necesita conexión a internet<br>para descargar Three.js. Conéctate y recarga (F5).';
+    }, 12000);
+  </script>
+
+  <!-- ===================== HUD ===================== -->
+  <div id="hud" class="hidden">
+    <div id="danger"></div>
+    <div id="crosshair"><span></span><span></span><span></span><span></span></div>
+
+    <div id="top">
+      <div id="objective">OBJETIVO: LLEGA A LA ZONA DE EXTRACCIÓN</div>
+      <div id="stats">
+        <span>☠ <b id="kills">0</b>/<b id="total">0</b></span>
+        <span>⌖ EXTRACCIÓN <b id="distance">0</b> m</span>
+        <span>⏱ <b id="time">00:00</b></span>
+      </div>
+    </div>
+
+    <div id="weapons">
+      <div class="slot" data-slot="0"><i>1</i><span class="wname">PISTOLA</span><b class="wammo">0</b></div>
+      <div class="slot" data-slot="1"><i>2</i><span class="wname">PLASMA</span><b class="wammo">0</b></div>
+    </div>
+
+    <div id="ammo">
+      <div id="ammo-name">PISTOLA 9MM</div>
+      <div id="ammo-count">12</div>
+      <div id="ammo-label">MUNICIÓN</div>
+    </div>
+
+    <div id="boost" class="hidden">⚡ ADRENALINA <b id="boost-time">0</b>s</div>
+    <div id="toast"></div>
+  </div>
+
+  <!-- ===================== PANTALLAS ===================== -->
+  <div id="loading" class="overlay">
+    <h1>OPERACIÓN<br />EXTRACCIÓN</h1>
+    <p id="loading-text">CARGANDO MODELOS GLB...</p>
+  </div>
+
+  <div id="start" class="overlay hidden">
+    <h1>OPERACIÓN<br />EXTRACCIÓN</h1>
+    <h2>Sobrevive al apocalipsis</h2>
+    <p class="story">
+      La infección se propagó desde el Laboratorio 7. Eres el último sobreviviente del búnker.<br />
+      Cruza el laboratorio, el patio y el almacén hasta el <span class="green">helipuerto de extracción</span>.<br />
+      La munición es escasa: busca cajas en el escenario. Cada infectado aguanta <b>dos</b> impactos.
+    </p>
+    <table class="controls">
+      <tr><td>W A S D</td><td>Moverse</td></tr>
+      <tr><td>MOUSE</td><td>Apuntar</td></tr>
+      <tr><td>CLIC IZQ.</td><td>Disparar (un tiro por clic)</td></tr>
+      <tr><td>1 / 2</td><td>Pistola / Rifle de plasma</td></tr>
+      <tr><td>ESC</td><td>Pausa</td></tr>
+    </table>
+    <button class="btn" id="btn-start">▶ HAZ CLIC PARA COMENZAR</button>
+  </div>
+
+  <div id="pause" class="overlay hidden">
+    <h1>PAUSA</h1>
+    <button class="btn" id="btn-resume">▶ CONTINUAR</button>
+  </div>
+
+  <div id="gameover" class="overlay hidden">
+    <h1 class="red">GAME OVER</h1>
+    <h2>Te atrapó un infectado</h2>
+    <p class="result" id="gameover-stats"></p>
+    <button class="btn" id="btn-retry">↻ REINICIAR (R)</button>
+  </div>
+
+  <div id="victory" class="overlay hidden">
+    <h1 class="green">¡MISIÓN COMPLETADA!</h1>
+    <h2>Has llegado a la zona de extracción</h2>
+    <p class="result" id="victory-stats"></p>
+    <button class="btn" id="btn-again">↻ JUGAR DE NUEVO (R)</button>
+  </div>
+
+  <!-- Versión de desarrollo: requiere servidor local. Para doble clic usar index.html -->
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
